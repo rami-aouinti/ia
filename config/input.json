@@ -10,7 +10,7 @@
  "ideas":[
   {"id":"IDEA-001","topic":"3 kleine Augenpausen für lange Bildschirmtage","priority":"priority","channels":["Instagram","TikTok"],"format":"Reel / Kurzvideo","assignee":"person-a","date":"2026-11-24","estimated_minutes":50,"media_ref":"media/demo/idea-001.mp4"},
   {"id":"IDEA-002","topic":"So finden wir gemeinsam eine passende Brillenfassung","priority":"priority","channels":["Instagram","Facebook"],"format":"Foto-Serie / Carousel","assignee":"person-b","date":"2026-11-25","estimated_minutes":60,"media_ref":"media/demo/idea-002.jpg"},
-  {"id":"IDEA-003","topic":"Ein Blick hinter die Kulissen der Brillenanpassung","priority":"priority","channels":["TikTok","LinkedIn"],"format":"Behind-the-scenes Video","assignee":"person-b","date":"2026-11-27","estimated_minutes":55,"media_ref":"media/demo/idea-003.mp4"},
+  {"id":"IDEA-003","topic":"Ein Blick hinter die Kulissen der Brillenanpassung","priority":"priority","channels":["TikTok","LinkedIn"],"format":"Behind-the-scenes Video","assignee":"person-b","date":"2026-11-27","estimated_minutes":45,"media_ref":"media/demo/idea-003.mp4"},
   {"id":"IDEA-004","topic":"Brillenpflege: Was im Alltag hilft","priority":"reserve","channels":["Facebook","Instagram"],"format":"Carousel","assignee":"person-a","date":"2026-11-28","estimated_minutes":35,"media_ref":"media/demo/idea-004.jpg"},
   {"id":"IDEA-005","topic":"Warum regelmäßige Sehberatung sinnvoll ist","priority":"reserve","channels":["LinkedIn","Facebook"],"format":"Text + Foto","assignee":"person-b","date":"2026-11-30","estimated_minutes":45,"media_ref":"media/demo/idea-005.jpg"}
  ]
