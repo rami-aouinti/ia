@@ -18,6 +18,8 @@ final class WorkflowTest extends TestCase
         self::assertCount(3,array_filter($p['ideas'],fn($i)=>$i['priority']==='priority'));
         self::assertCount(2,array_filter($p['ideas'],fn($i)=>$i['priority']==='reserve'));
         self::assertTrue($p['workload']['person-a']['within_capacity']);
+        self::assertTrue($p['workload']['person-b']['within_capacity']);
+        self::assertSame(150, $p['workload']['person-b']['planned_minutes']);
     }
     public function testCapacityOverrunIsReported(): void {
         $this->input['ideas'][0]['estimated_minutes']=100;
