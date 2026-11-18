@@ -1,0 +1,113 @@
+{
+    "week": "2026-W48",
+    "business": "Brillenatelier Beispielblick",
+    "selection_note": "Drei Prioritäten decken Sehberatung, persönliche Beratung und Einblicke ab. Zwei Themen bleiben Reserve. Inspirationshinweise sind keine bestätigten Trends; Kennzahlen liegen nicht vor.",
+    "inspirations": [
+        {
+            "id": "SRC-DEMO-001",
+            "channel": "Instagram",
+            "finding": "Kurze Tipps zu Bildschirm-Pausen",
+            "metrics": null
+        },
+        {
+            "id": "SRC-DEMO-002",
+            "channel": "TikTok",
+            "finding": "Ein Blick hinter die Kulissen einer Brillenanpassung",
+            "metrics": null
+        },
+        {
+            "id": "SRC-DEMO-003",
+            "channel": "Facebook",
+            "finding": "Häufige Fragen zur Brillenfassung",
+            "metrics": null
+        }
+    ],
+    "ideas": [
+        {
+            "id": "IDEA-001",
+            "topic": "3 kleine Augenpausen für lange Bildschirmtage",
+            "priority": "priority",
+            "channels": [
+                "Instagram",
+                "TikTok"
+            ],
+            "format": "Reel \/ Kurzvideo",
+            "assignee": "person-a",
+            "date": "2026-11-24",
+            "estimated_minutes": 50,
+            "media_ref": "media\/demo\/idea-001.mp4"
+        },
+        {
+            "id": "IDEA-002",
+            "topic": "So finden wir gemeinsam eine passende Brillenfassung",
+            "priority": "priority",
+            "channels": [
+                "Instagram",
+                "Facebook"
+            ],
+            "format": "Foto-Serie \/ Carousel",
+            "assignee": "person-b",
+            "date": "2026-11-25",
+            "estimated_minutes": 60,
+            "media_ref": "media\/demo\/idea-002.jpg"
+        },
+        {
+            "id": "IDEA-003",
+            "topic": "Ein Blick hinter die Kulissen der Brillenanpassung",
+            "priority": "priority",
+            "channels": [
+                "TikTok",
+                "LinkedIn"
+            ],
+            "format": "Behind-the-scenes Video",
+            "assignee": "person-b",
+            "date": "2026-11-27",
+            "estimated_minutes": 45,
+            "media_ref": "media\/demo\/idea-003.mp4"
+        },
+        {
+            "id": "IDEA-004",
+            "topic": "Brillenpflege: Was im Alltag hilft",
+            "priority": "reserve",
+            "channels": [
+                "Facebook",
+                "Instagram"
+            ],
+            "format": "Carousel",
+            "assignee": "person-a",
+            "date": "2026-11-28",
+            "estimated_minutes": 35,
+            "media_ref": "media\/demo\/idea-004.jpg"
+        },
+        {
+            "id": "IDEA-005",
+            "topic": "Warum regelmäßige Sehberatung sinnvoll ist",
+            "priority": "reserve",
+            "channels": [
+                "LinkedIn",
+                "Facebook"
+            ],
+            "format": "Text + Foto",
+            "assignee": "person-b",
+            "date": "2026-11-30",
+            "estimated_minutes": 45,
+            "media_ref": "media\/demo\/idea-005.jpg"
+        }
+    ],
+    "workload": {
+        "person-a": {
+            "name": "Person A",
+            "planned_minutes": 85,
+            "available_minutes": 90,
+            "within_capacity": true,
+            "warning": null
+        },
+        "person-b": {
+            "name": "Person B",
+            "planned_minutes": 150,
+            "available_minutes": 150,
+            "within_capacity": true,
+            "warning": null
+        }
+    }
+}

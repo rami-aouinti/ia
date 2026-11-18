@@ -1,0 +1,13 @@
+{
+    "idempotency_key": "IDEA-001:a7a52640dd4d8c4fb4539fa6f94311af1571ed6565df21c4eb83a2a1c005c5dc",
+    "content_id": "IDEA-001",
+    "status": "handed_over",
+    "channels": [
+        "Instagram",
+        "TikTok"
+    ],
+    "scheduled_at": "2026-11-24",
+    "text": "Lange am Bildschirm? Schau regelmäßig für einen Moment in die Ferne, blinzle bewusst und gönn dir kurze Pausen. Kleine Routinen können den Sehkomfort im Alltag unterstützen. Bei Fragen beraten wir dich gerne persönlich.",
+    "media_ref": "media\/demo\/idea-001.mp4",
+    "handover_mode": "SIMULATED_ONLY"
+}

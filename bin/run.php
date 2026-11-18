@@ -1,8 +1,12 @@
 <?php
+
 declare(strict_types=1);
+
 require dirname(__DIR__).'/vendor/autoload.php';
+
 use App\MockContentGenerator;
 use App\Workflow;
+
 $root=dirname(__DIR__);
 $input=json_decode(file_get_contents($root.'/config/input.json'),true,512,JSON_THROW_ON_ERROR);
 $workflow=new Workflow(new MockContentGenerator());

@@ -1,6 +1,9 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App;
+
 /** Deterministic local substitute for an LLM; replaceable through the interface. */
 final class MockContentGenerator implements ContentGeneratorInterface
 {
