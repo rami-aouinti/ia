@@ -10,10 +10,16 @@ $plan=$workflow->createWeeklyPlan($input);
 $brief=$workflow->createBrief($input,'IDEA-001');
 $idea=$input['ideas'][0];
 $approval=$workflow->approve($brief,$idea,'Beispiel-Redaktion');
-$payload=$workflow->handover($brief,$approval,$idea);
+$handoverPath=$root.'/output/handover-IDEA-001.json';
+if (is_file($handoverPath)) {
+    $payload=json_decode(file_get_contents($handoverPath),true,512,JSON_THROW_ON_ERROR);
+    echo "Existing handover found; duplicate handover skipped.".PHP_EOL;
+} else {
+    $payload=$workflow->handover($brief,$approval,$idea);
+}
 @mkdir($root.'/output',0775,true);
 $write=fn(string $name,array $data)=>file_put_contents($root.'/output/'.$name,json_encode($data,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR));
-$write('weekly-plan.json',$plan); $write('brief-IDEA-001.json',$brief); $write('approval-IDEA-001.json',$approval); $write('handover-IDEA-001.json',$payload);
+$write('weekly-plan.json',$plan); $write('brief-IDEA-001.json',$brief); $write('approval-IDEA-001.json',$approval); if (!is_file($handoverPath)) file_put_contents($handoverPath,json_encode($payload,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR));
 $lines=["Wochenübersicht ".$plan['week'],"Unternehmen: ".$plan['business'],'','Ideen:'];
 foreach($plan['ideas'] as $i) $lines[]=sprintf('- [%s] %s | %s | %s | %d Min. | %s',strtoupper($i['priority']),$i['topic'],implode(', ',$i['channels']),$i['assignee'],$i['estimated_minutes'],$i['date']);
 $lines[]=''; $lines[]='Kapazität:';
