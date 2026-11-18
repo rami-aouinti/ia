@@ -51,7 +51,7 @@ final class WorkflowTest extends TestCase
         $this->workflow->handover($brief,$approval,$idea);
     }
     private function approvedFixture(): array {
-        $idea=$this->input['ideas'][0]; $brief=$this->workflow->createBrief($this->input,$idea['id']);
+        $idea=$this->input['ideas'][0]; $brief=$this->workflow->createBrief($this->input,$idea['id']); $brief['status']='pending_review';
         return [$idea,$brief,$this->workflow->approve($brief,$idea,'Reviewer')];
     }
 }
