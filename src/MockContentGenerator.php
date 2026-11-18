@@ -8,6 +8,7 @@ final class MockContentGenerator implements ContentGeneratorInterface
     {
         return [
             'idea_id'=>$idea['id'],
+            'status'=>'draft',
             'hook'=>'Deine Augen leisten jeden Tag viel – gönn ihnen zwischendurch eine kleine Pause.',
             'caption'=>'Lange am Bildschirm? Schau regelmäßig für einen Moment in die Ferne, blinzle bewusst und gönn dir kurze Pausen. Kleine Routinen können den Sehkomfort im Alltag unterstützen. Bei Fragen beraten wir dich gerne persönlich.',
             'production_plan'=>['Szene 1: Person am Schreibtisch vor dem Bildschirm.','Szene 2: Blick aus dem Fenster in die Ferne.','Szene 3: Drei Tipps direkt in die Kamera sprechen.','Szene 4: Freundlicher Abschluss im Geschäft.'],
