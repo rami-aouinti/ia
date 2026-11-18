@@ -8,6 +8,7 @@ $input=json_decode(file_get_contents($root.'/config/input.json'),true,512,JSON_T
 $workflow=new Workflow(new MockContentGenerator());
 $plan=$workflow->createWeeklyPlan($input);
 $brief=$workflow->createBrief($input,'IDEA-001');
+$brief['status']='pending_review';
 $idea=$input['ideas'][0];
 $approval=$workflow->approve($brief,$idea,'Beispiel-Redaktion');
 $handoverPath=$root.'/output/handover-IDEA-001.json';
