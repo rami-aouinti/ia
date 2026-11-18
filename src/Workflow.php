@@ -37,6 +37,7 @@ final class Workflow
     public function approve(array $brief,array $idea,string $reviewer): array
     {
         if(trim($reviewer)==='') throw new RuntimeException('Reviewer is required.');
+        if(($brief['status']??null)!=='pending_review') throw new RuntimeException('Only content submitted for review can be approved.');
         return ['idea_id'=>$idea['id'],'version_hash'=>$this->fingerprint($brief,$idea),'reviewed_by'=>$reviewer,'reviewed_at'=>gmdate(DATE_ATOM),'status'=>'approved'];
     }
     public function handover(array $brief,array $approval,array $idea,array $existingHandover=[]): array
