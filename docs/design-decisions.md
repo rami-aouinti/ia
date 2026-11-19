@@ -9,13 +9,13 @@ This executable PHP prototype demonstrates weekly planning, a full content brief
 - `MockContentGenerator`: deterministic local substitute for an LLM. No external AI request is made.
 - `Workflow`: planning, workload calculation, content fingerprint, approval and handover guards.
 - `HandoverStore`: durable local idempotency store with an exclusive lock and atomic file write.
-- `bin/run.php`: runnable end-to-end demonstration.
-- `tests/WorkflowTest.php`: automated evidence for required positive and negative cases.
+- `bin/run.php`: runnable end-to-end demonstration; `WORKFLOW_OUTPUT_DIR` can isolate its output for tests.
+- `tests/WorkflowTest.php`: automated evidence for required positive and negative cases, including two real CLI process runs.
 - `output/`: example plan, briefing, approval, handover payload and weekly text overview.
 
 ## Workflow states and approval
 
-The intended state path is `draft -> pending_review -> approved -> handed_over`.
+Every planned idea carries a status. The intended state path is `draft -> pending_review -> approved -> handed_over`.
 
 Approval is bound to a SHA-256 fingerprint over the idea, brief, channels and publication date. The workflow recalculates the fingerprint before handover. A text, media reference, channel or date change therefore makes the old approval invalid.
 
@@ -23,7 +23,9 @@ Only an explicitly approved, matching version with a non-empty media reference c
 
 ## Duplicate prevention and restart behavior
 
-The payload has a deterministic idempotency key based on idea ID and content fingerprint. `HandoverStore` persists one JSON file per content ID. It locks the write, returns the existing payload when the same key is submitted again, and rejects a different version rather than silently overwriting a previous handover. The integration test creates a new store instance to represent a restarted workflow and verifies that only one payload exists.
+The payload has a deterministic idempotency key based on idea ID and content fingerprint. `HandoverStore` persists one JSON file per content ID. It locks the write, returns the existing payload when the same key is submitted again, and rejects a different version rather than silently overwriting a previous handover.
+
+The PHPUnit integration test launches `bin/run.php` twice as separate PHP processes against the same temporary output directory. It asserts that the second process reports a skipped duplicate and that exactly one handover JSON exists. A separate store-level test checks that a different version cannot overwrite an existing handover.
 
 This is appropriate for a single-machine prototype. A production system with multiple hosts should use a database transaction and a unique constraint on the idempotency key and content ID, not a shared local filesystem.
 
@@ -38,11 +40,11 @@ The three priorities cover screen-time eye breaks, personal frame advice and a b
 | Function | Status |
 |---|---|
 | Read structured synthetic input | Executed |
-| Generate five-idea weekly plan | Executed |
+| Generate five-idea weekly plan, including status per idea | Executed |
 | Calculate per-person workload and warn on overrun | Executed |
 | Generate one full production brief | Executed with deterministic mock output |
 | Human approval and version fingerprint | Executed as a workflow rule; reviewer is a synthetic CLI actor |
-| Persist simulated handover exactly once across reruns | Executed locally through JSON storage |
+| Persist simulated handover exactly once across separate CLI runs | Executed locally through locked JSON storage |
 | Social-media publishing | Not implemented; explicitly excluded |
 | Real LLM generation | Not implemented; mock adapter only |
 | Real media production | Not implemented; media references are synthetic |
