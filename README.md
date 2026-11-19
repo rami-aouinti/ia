@@ -31,9 +31,11 @@ rm -f output/handover-IDEA-001.json output/handover-IDEA-001.json.lock
 composer workflow
 ```
 
+The CLI also supports `WORKFLOW_OUTPUT_DIR=/path/to/temp composer workflow` so runs can be isolated from the committed sample artefacts.
+
 ## Generated artefacts
 
-- `output/weekly-plan.json`: five ideas (three priorities and two reserves), three synthetic inspiration references and workload forecast.
+- `output/weekly-plan.json`: five ideas (three priorities and two reserves), each with a status, three synthetic inspiration references and workload forecast.
 - `output/brief-IDEA-001.json`: full briefing with Instagram and TikTok variants.
 - `output/approval-IDEA-001.json`: approval tied to the exact content fingerprint.
 - `output/handover-IDEA-001.json`: simulated handover payload with idempotency key.
@@ -49,12 +51,13 @@ composer workflow
 - `bin/run.php`: executable end-to-end demonstration.
 - `tests/WorkflowTest.php`: automated tests for required success and failure cases.
 - `docs/design-decisions.md`: architecture, assumptions and extension concepts.
+- `docs/acceptance-test-evidence.md`: acceptance matrix and manual verification steps.
 
 ## Requirement coverage
 
 | Assignment requirement | Evidence |
 |---|---|
-| Five weekly ideas: three priorities, two reserves | `output/weekly-plan.json`; `testPlanContainsThreePrioritiesAndTwoReserves` |
+| Five weekly ideas: three priorities, two reserves, each with status | `output/weekly-plan.json`; `testPlanContainsThreePrioritiesAndTwoReserves` |
 | Structured inputs, audiences, tone, season, inspiration | `config/input.json` |
 | Three synthetic inspiration findings; no unsupported trend claims | `config/input.json`; plan selection note |
 | Per-person capacity of 90 / 150 minutes and visible overrun | `output/weekly-plan.json`; `testCapacityOverrunIsReportedWithoutIncreasingAvailability` |
@@ -62,13 +65,13 @@ composer workflow
 | Human approval tied to exact version | `output/approval-IDEA-001.json`; fingerprint tests |
 | Missing approval/media blocks handover | `testMissingApprovalBlocksHandover`; `testMissingMediaReferenceBlocksHandover` |
 | Text change requires renewed approval | `testTextChangeAfterApprovalInvalidatesApproval` |
-| Exactly-once handover, including restarted workflow | `HandoverStore`; `testPersistentHandoverIsNotDuplicatedAfterWorkflowRestart` |
+| Exactly-once handover, including a real CLI process restart | `HandoverStore`; `testCliWorkflowDoesNotDuplicateHandoverAfterProcessRestart` |
 | Weekly text overview | `output/weekly-overview.txt` |
 | Expansion concepts | `docs/design-decisions.md` |
 
 ## Executed, simulated and not implemented
 
-Executed locally: planning, workload calculation, deterministic brief generation, approval fingerprint checks and local JSON handover persistence.
+Executed in the prototype: planning, workload calculation, deterministic brief generation, approval fingerprint checks and local JSON handover persistence.
 
 Simulated: AI-generated content (fixed deterministic response), reviewer identity, media asset reference and publishing handover. The handover payload is not a publication.
 
@@ -84,7 +87,7 @@ Run:
 composer test
 ```
 
-The PHPUnit suite covers the four required acceptance scenarios plus duplicate-version protection. For a visible end-to-end restart check, run `composer workflow` twice and retain the terminal output as a screenshot or log with the submission.
+The PHPUnit suite covers all four required acceptance scenarios, a real CLI restart test, and protection against overwriting a previously handed-over version. For a visible end-to-end demonstration, run `composer workflow` twice and retain the terminal output as a screenshot or log with the submission.
 
 The tests are automated evidence; no test result is claimed here until the commands have actually been run in the submission environment.
 
