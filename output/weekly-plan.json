@@ -31,11 +31,12 @@
                 "Instagram",
                 "TikTok"
             ],
-            "format": "Reel \/ Kurzvideo",
+            "format": "Reel / Kurzvideo",
             "assignee": "person-a",
             "date": "2026-11-24",
             "estimated_minutes": 50,
-            "media_ref": "media\/demo\/idea-001.mp4"
+            "media_ref": "media/demo/idea-001.mp4",
+            "status": "draft"
         },
         {
             "id": "IDEA-002",
@@ -45,11 +46,12 @@
                 "Instagram",
                 "Facebook"
             ],
-            "format": "Foto-Serie \/ Carousel",
+            "format": "Foto-Serie / Carousel",
             "assignee": "person-b",
             "date": "2026-11-25",
             "estimated_minutes": 60,
-            "media_ref": "media\/demo\/idea-002.jpg"
+            "media_ref": "media/demo/idea-002.jpg",
+            "status": "draft"
         },
         {
             "id": "IDEA-003",
@@ -63,7 +65,8 @@
             "assignee": "person-b",
             "date": "2026-11-27",
             "estimated_minutes": 45,
-            "media_ref": "media\/demo\/idea-003.mp4"
+            "media_ref": "media/demo/idea-003.mp4",
+            "status": "draft"
         },
         {
             "id": "IDEA-004",
@@ -77,7 +80,8 @@
             "assignee": "person-a",
             "date": "2026-11-28",
             "estimated_minutes": 35,
-            "media_ref": "media\/demo\/idea-004.jpg"
+            "media_ref": "media/demo/idea-004.jpg",
+            "status": "draft"
         },
         {
             "id": "IDEA-005",
@@ -91,7 +95,8 @@
             "assignee": "person-b",
             "date": "2026-11-30",
             "estimated_minutes": 45,
-            "media_ref": "media\/demo\/idea-005.jpg"
+            "media_ref": "media/demo/idea-005.jpg",
+            "status": "draft"
         }
     ],
     "workload": {
