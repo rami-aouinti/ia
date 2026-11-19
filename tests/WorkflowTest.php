@@ -82,6 +82,48 @@ final class WorkflowTest extends TestCase
         }
     }
 
+
+    public function testCliWorkflowDoesNotDuplicateHandoverAfterProcessRestart(): void
+    {
+        $directory = sys_get_temp_dir() . '/social-workflow-cli-' . bin2hex(random_bytes(8));
+        $run = function () use ($directory): array {
+            $pipes = [];
+            $process = proc_open(
+                [PHP_BINARY, dirname(__DIR__) . '/bin/run.php'],
+                [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+                $pipes,
+                dirname(__DIR__),
+                array_merge($_ENV, ['WORKFLOW_OUTPUT_DIR' => $directory])
+            );
+            self::assertIsResource($process);
+            $stdout = stream_get_contents($pipes[1]);
+            $stderr = stream_get_contents($pipes[2]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            $exitCode = proc_close($process);
+
+            return [$exitCode, $stdout, $stderr];
+        };
+
+        try {
+            [$firstExit, $firstOutput, $firstError] = $run();
+            [$secondExit, $secondOutput, $secondError] = $run();
+
+            self::assertSame(0, $firstExit, $firstError);
+            self::assertSame(0, $secondExit, $secondError);
+            self::assertStringContainsString('Workflow completed.', $firstOutput);
+            self::assertStringContainsString('Existing identical handover found; duplicate handover skipped.', $secondOutput);
+            self::assertSame(1, count(glob($directory . '/handover-*.json') ?: []));
+        } finally {
+            foreach (glob($directory . '/*') ?: [] as $file) {
+                unlink($file);
+            }
+            if (is_dir($directory)) {
+                rmdir($directory);
+            }
+        }
+    }
+
     /** @throws JsonException */
     public function testDifferentVersionCannotOverwriteExistingHandover(): void
     {
