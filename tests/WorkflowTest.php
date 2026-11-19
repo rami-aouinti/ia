@@ -29,6 +29,7 @@ final class WorkflowTest extends TestCase
         self::assertCount(5, $plan['ideas']);
         self::assertCount(3, array_filter($plan['ideas'], fn ($idea) => $idea['priority'] === 'priority'));
         self::assertCount(2, array_filter($plan['ideas'], fn ($idea) => $idea['priority'] === 'reserve'));
+        self::assertSame(['draft'], array_values(array_unique(array_column($plan['ideas'], 'status'))));
         self::assertSame(90, $plan['workload']['person-a']['available_minutes']);
         self::assertSame(150, $plan['workload']['person-b']['available_minutes']);
         self::assertTrue($plan['workload']['person-a']['within_capacity']);
