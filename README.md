@@ -1,6 +1,6 @@
 # AI Social Media Workflow
 
-A small PHP prototype for preparing and approving social-media content for a fictional optician. The prototype uses synthetic data only. It does not publish to real social accounts.
+A small, reproducible PHP prototype for preparing and approving social-media content for a fictional optician. It uses synthetic data only and never publishes to real social accounts.
 
 ## Requirements
 
@@ -15,46 +15,85 @@ composer workflow
 composer test
 ```
 
-The workflow writes its artefacts to `output/`:
-- `weekly-plan.json`: five ideas (three priorities and two reserves), inspiration references and workload forecast
-- `brief-IDEA-001.json`: complete sample briefing with Instagram and TikTok variants
-- `approval-IDEA-001.json`: approval tied to the exact content fingerprint
-- `handover-IDEA-001.json`: simulated publishing payload
-- `weekly-overview.txt`: email-ready weekly summary
+Run the workflow twice to demonstrate restart-safe idempotency:
 
-Running the workflow again reuses an existing handover file instead of creating a second handover. Delete that generated file only when intentionally resetting the local demo.
+```bash
+composer workflow
+composer workflow
+```
+
+The second run must print `Existing identical handover found; duplicate handover skipped.` It must not create a second `handover-IDEA-001.json` file.
+
+To reset the local demonstration intentionally, remove only its generated handover and rerun:
+
+```bash
+rm -f output/handover-IDEA-001.json output/handover-IDEA-001.json.lock
+composer workflow
+```
+
+## Generated artefacts
+
+- `output/weekly-plan.json`: five ideas (three priorities and two reserves), three synthetic inspiration references and workload forecast.
+- `output/brief-IDEA-001.json`: full briefing with Instagram and TikTok variants.
+- `output/approval-IDEA-001.json`: approval tied to the exact content fingerprint.
+- `output/handover-IDEA-001.json`: simulated handover payload with idempotency key.
+- `output/weekly-overview.txt`: text summary that could later be sent by email; no email is sent.
 
 ## Project structure
 
-- `config/input.json`: all fictional input data and team capacities
-- `src/ContentGeneratorInterface.php`: replaceable content-generation boundary
-- `src/MockContentGenerator.php`: deterministic AI simulation
-- `src/Workflow.php`: planning, capacity, approval fingerprint and handover rules
-- `bin/run.php`: executable demonstration
-- `tests/WorkflowTest.php`: PHPUnit tests for the required safety and capacity cases
-- `docs/design-decisions.md`: architecture, assumptions and limitations
+- `config/input.json`: fictional input data and declared team capacities.
+- `src/ContentGeneratorInterface.php`: replaceable content-generation boundary.
+- `src/MockContentGenerator.php`: deterministic mock output, not a live AI call.
+- `src/Workflow.php`: planning, workload, approval fingerprint and handover rules.
+- `src/HandoverStore.php`: durable local one-time handover store.
+- `bin/run.php`: executable end-to-end demonstration.
+- `tests/WorkflowTest.php`: automated tests for required success and failure cases.
+- `docs/design-decisions.md`: architecture, assumptions and extension concepts.
 
-## What is implemented
+## Requirement coverage
 
-- Exactly three priority ideas and two reserve ideas are required.
-- Required idea fields are validated.
-- Planned minutes are compared with each person's available weekly time; overruns are visible.
-- One priority idea receives a full production briefing.
-- Approval is bound to the exact idea, copy, media reference, channels and date using SHA-256.
-- Any change after approval invalidates the old approval.
-- Missing approval or media reference blocks handover.
-- A persisted local handover JSON file prevents the CLI demo from handing over the same item again on rerun.
+| Assignment requirement | Evidence |
+|---|---|
+| Five weekly ideas: three priorities, two reserves | `output/weekly-plan.json`; `testPlanContainsThreePrioritiesAndTwoReserves` |
+| Structured inputs, audiences, tone, season, inspiration | `config/input.json` |
+| Three synthetic inspiration findings; no unsupported trend claims | `config/input.json`; plan selection note |
+| Per-person capacity of 90 / 150 minutes and visible overrun | `output/weekly-plan.json`; `testCapacityOverrunIsReportedWithoutIncreasingAvailability` |
+| One complete brief with production plan, overlays, cover, CTA and two channel variants | `output/brief-IDEA-001.json` |
+| Human approval tied to exact version | `output/approval-IDEA-001.json`; fingerprint tests |
+| Missing approval/media blocks handover | `testMissingApprovalBlocksHandover`; `testMissingMediaReferenceBlocksHandover` |
+| Text change requires renewed approval | `testTextChangeAfterApprovalInvalidatesApproval` |
+| Exactly-once handover, including restarted workflow | `HandoverStore`; `testPersistentHandoverIsNotDuplicatedAfterWorkflowRestart` |
+| Weekly text overview | `output/weekly-overview.txt` |
+| Expansion concepts | `docs/design-decisions.md` |
 
-## Simulated / not implemented
+## Executed, simulated and not implemented
 
-The generator is deterministic mock output, not a live AI call. The handover is a local JSON file, not a publication. Media files are fictional references. There is no real social platform integration, UI, database, analytics dashboard, comment moderation or scheduled execution.
+Executed locally: planning, workload calculation, deterministic brief generation, approval fingerprint checks and local JSON handover persistence.
 
-The handover ledger is file-based for this time-boxed prototype. A production system should store handovers transactionally in a database and enforce a unique constraint on the idempotency key to protect against concurrent workers.
+Simulated: AI-generated content (fixed deterministic response), reviewer identity, media asset reference and publishing handover. The handover payload is not a publication.
 
-## Assumptions
+Designed only: success dashboard, economics, human-reviewed comment drafts, scheduled central operation and extended capacity planning. These are documented but not implemented.
 
-All names, business details, source IDs, URLs and media references are synthetic. Inspiration entries are idea prompts only; no trend or performance claim is made. Missing metrics remain unknown. All five ideas, including reserves, count toward the team's planned workload.
+Not included by design: real social-platform APIs, real LLM credentials, media production, email delivery, production hosting or scraping.
 
-## Time box
+## Tests and test evidence
 
-The assignment requests a maximum of four hours including documentation. Record the actual time spent here before submitting: **Actual time: [fill in]**. Remaining work is listed in the design decisions document.
+Run:
+
+```bash
+composer test
+```
+
+The PHPUnit suite covers the four required acceptance scenarios plus duplicate-version protection. For a visible end-to-end restart check, run `composer workflow` twice and retain the terminal output as a screenshot or log with the submission.
+
+The tests are automated evidence; no test result is claimed here until the commands have actually been run in the submission environment.
+
+## Assumptions and tools
+
+All data is synthetic; URLs use `example.com`; inspiration findings are prompts rather than confirmed trends; unknown metrics remain null. Tools: PHP, Composer and PHPUnit. A deterministic mock implements `ContentGeneratorInterface`, so a real AI provider could be added later without changing the workflow rules.
+
+## Time box and open points
+
+The assignment limit is four hours including documentation. **Actual time spent: [fill in your measured time before submission; do not estimate].**
+
+Open points: run the test suite and capture its output; record actual elapsed time; replace the file-based store with a transactional database and unique constraint for multi-host production; add real integrations only if the scope changes.
