@@ -2,3 +2,4 @@
 /.phpunit.cache/
 /storage/*
 !/storage/.gitkeep
+/output/*.lock
