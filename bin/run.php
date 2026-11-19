@@ -9,7 +9,7 @@ use App\MockContentGenerator;
 use App\Workflow;
 
 $root = dirname(__DIR__);
-$outputDirectory = $root . '/output';
+$outputDirectory = getenv('WORKFLOW_OUTPUT_DIR') ?: $root . '/output';
 $input = json_decode(file_get_contents($root . '/config/input.json'), true, 512, JSON_THROW_ON_ERROR);
 
 $workflow = new Workflow(new MockContentGenerator());
